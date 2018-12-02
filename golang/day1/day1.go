@@ -9,11 +9,15 @@ import (
 func main() {
 	resultAsInts := aocutils.LoadArrayOfIntsFromTextFile("day1.data")
 
-	part1 := processor(resultAsInts)
 	start := time.Now().UnixNano()
-	part2 := repeatFinder(resultAsInts)
+	part1 := processor(resultAsInts)
 	end := time.Now().UnixNano()
 	fmt.Println(part1)
+	fmt.Println(float32(end-start) / 1000.0 / 1000.0)
+
+	start = time.Now().UnixNano()
+	part2 := repeatFinder(resultAsInts)
+	end = time.Now().UnixNano()
 	fmt.Println(part2)
 	fmt.Println(float32(end-start) / 1000.0 / 1000.0)
 }
