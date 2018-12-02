@@ -1,31 +1,13 @@
 package main
 
 import (
-	"encoding/json"
+	"aocutils"
 	"fmt"
-	"io/ioutil"
-	"log"
-	"os"
-	"strconv"
-	"strings"
 	"time"
 )
 
 func main() {
-	jsonFile, err := os.Open("day1.json")
-
-	if err != nil {
-		fmt.Println(err)
-	}
-
-	defer jsonFile.Close()
-
-	byteValue, _ := ioutil.ReadAll(jsonFile)
-
-	var result []string
-	_ = json.Unmarshal(byteValue, &result)
-
-	var resultAsInts = convertToIntegers(result)
+	resultAsInts := aocutils.LoadArrayOfIntsFromTextFile("day1.data")
 
 	part1 := processor(resultAsInts)
 	start := time.Now().UnixNano()
@@ -33,19 +15,7 @@ func main() {
 	end := time.Now().UnixNano()
 	fmt.Println(part1)
 	fmt.Println(part2)
-	fmt.Println((end - start) / 1000 / 1000)
-}
-
-func convertToIntegers(data []string) (ints []int) {
-	ints = []int{}
-	for _, str := range data {
-		int, err := strconv.Atoi(strings.Replace(str, "+", "", -1))
-		if err != nil {
-			log.Fatal(err)
-		}
-		ints = append(ints, int)
-	}
-	return ints
+	fmt.Println(float32(end-start) / 1000.0 / 1000.0)
 }
 
 func processor(data []int) (sum int) {
