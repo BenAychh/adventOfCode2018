@@ -1,7 +1,6 @@
 function commonLetters(data) {
   const {
     id1,
-    id2,
     index
   } = getSimilarIds(data)
   return id1.substring(0, index) + id1.substring(index + 1)
