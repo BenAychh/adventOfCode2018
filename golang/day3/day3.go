@@ -9,7 +9,7 @@ import (
 )
 
 type claim struct {
-	id     string
+	id     int
 	x      int
 	y      int
 	width  int
@@ -19,56 +19,51 @@ type claim struct {
 func main() {
 	data := aocutils.LoadArrayOfStringsFromTextFile("day3.data")
 	start := time.Now().UnixNano()
-	part1 := overlap(data)
+	part1, overlapMap, claims := overlap(data)
 	end := time.Now().UnixNano()
 	fmt.Println(part1)
 	fmt.Println(float32(end-start) / 1000 / 1000)
 
 	start = time.Now().UnixNano()
-	part2 := noOverLap(data)
+	part2 := noOverLap(overlapMap, claims)
 	end = time.Now().UnixNano()
 	fmt.Println(part2)
 	fmt.Println(float32(end-start) / 1000 / 1000)
 }
 
-func noOverLap(data []string) string {
-	claims := convertToClaimsArray(data)
-	overlapMap := map[string][]string{}
-	for _, claim := range claims {
-		claimSpaces(claim, overlapMap)
-	}
+func noOverLap(overlapMap map[string]int, claims []claim) int {
 	for _, claim := range claims {
 		isShared := checkSharedSpaces(claim, overlapMap)
 		if !isShared {
 			return claim.id
 		}
 	}
-	return ""
+	return -1
 }
 
-func overlap(data []string) int {
+func overlap(data []string) (int, map[string]int, []claim) {
 	claims := convertToClaimsArray(data)
-	overlapMap := map[string][]string{}
+	overlapMap := map[string]int{}
 	for _, claim := range claims {
 		claimSpaces(claim, overlapMap)
 	}
 
 	multiples := 0
 	for _, value := range overlapMap {
-		if len(value) > 1 {
+		if value > 1 {
 			multiples++
 		}
 	}
 
-	return multiples
+	return multiples, overlapMap, claims
 }
 
-func checkSharedSpaces(claim claim, grid map[string][]string) bool {
+func checkSharedSpaces(claim claim, grid map[string]int) bool {
 	for x := claim.x; x < claim.x+claim.width; x++ {
 		for y := claim.y; y < claim.y+claim.height; y++ {
 			key := fmt.Sprintf("%d,%d", x, y)
 			ids := grid[key]
-			if len(ids) > 1 {
+			if ids > 1 {
 				return true
 			}
 		}
@@ -76,7 +71,7 @@ func checkSharedSpaces(claim claim, grid map[string][]string) bool {
 	return false
 }
 
-func claimSpaces(claim claim, grid map[string][]string) {
+func claimSpaces(claim claim, grid map[string]int) {
 	for x := claim.x; x < claim.x+claim.width; x++ {
 		for y := claim.y; y < claim.y+claim.height; y++ {
 			claimSpace(x, y, claim.id, grid)
@@ -84,13 +79,13 @@ func claimSpaces(claim claim, grid map[string][]string) {
 	}
 }
 
-func claimSpace(x, y int, id string, grid map[string][]string) {
+func claimSpace(x, y, id int, grid map[string]int) {
 	key := fmt.Sprintf("%d,%d", x, y)
-	array, ok := grid[key]
+	value, ok := grid[key]
 	if ok {
-		grid[key] = append(array, id)
+		grid[key] = value + 1
 	} else {
-		grid[key] = []string{id}
+		grid[key] = 1
 	}
 }
 
@@ -102,8 +97,8 @@ func convertToClaimsArray(data []string) (claims []claim) {
 }
 
 func decodeClaim(line string) (claim claim) {
-	pieces := strings.Split(line, " ")
-	claim.id = pieces[0]
+	pieces := strings.Split(strings.Replace(line, "#", "", -1), " ")
+	claim.id, _ = strconv.Atoi(pieces[0])
 	cleanCoordsString := strings.Replace(pieces[2], ":", "", -1)
 	coordsStringsArray := strings.Split(cleanCoordsString, ",")
 	claim.x, _ = strconv.Atoi(coordsStringsArray[0])
