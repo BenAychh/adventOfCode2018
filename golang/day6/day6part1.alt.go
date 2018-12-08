@@ -1,6 +1,8 @@
 package main
 
 import (
+	"fmt"
+
 	"github.com/BenAychh/aocutils"
 )
 
@@ -53,13 +55,15 @@ func largestAreaAlt(data []aocutils.Vertex) (aocutils.Vertex, int) {
 	return largestAreaVertex, largestArea
 }
 
-func getClosestDistances(data []aocutils.Vertex, gridMaxWidth, gridMaxHeight int) (everyPoint map[string]pointClaim) {
-	everyPoint = map[string]pointClaim{}
+func getClosestDistances(data []aocutils.Vertex, gridMaxWidth, gridMaxHeight int) (everyPoint map[string]*pointClaim) {
+	everyPoint = map[string]*pointClaim{}
+	loopCount := 0
 	for x := 0; x <= gridMaxWidth; x++ {
 		for y := 0; y <= gridMaxHeight; y++ {
 			claim := pointClaim{}
 			distance := gridMaxHeight + gridMaxWidth
 			for _, center := range data {
+				loopCount++
 				thisDistance := calcManhattanDistance(x, y, center)
 				if thisDistance < distance {
 					distance = thisDistance
@@ -69,8 +73,9 @@ func getClosestDistances(data []aocutils.Vertex, gridMaxWidth, gridMaxHeight int
 					claim.points = append(claim.points, center)
 				}
 			}
-			everyPoint[getKey(x, y)] = claim
+			everyPoint[getKey(x, y)] = &claim
 		}
 	}
+	fmt.Printf("loopCount %d\n", loopCount)
 	return
 }

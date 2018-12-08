@@ -16,7 +16,7 @@ func main() {
 	fmt.Printf("Part 1: %d (%v), Time: %fms\n", part1Area, part1Vertex, float32(end-start)/1000.0/1000.0)
 
 	start = time.Now().UnixNano()
-	part1AltVertex, part1AltArea := largestArea(data)
+	part1AltVertex, part1AltArea := largestAreaAlt(data)
 	end = time.Now().UnixNano()
 	fmt.Printf("Part 1 Alt: %d (%v), Time: %fms\n", part1AltArea, part1AltVertex, float32(end-start)/1000.0/1000.0)
 
@@ -64,24 +64,33 @@ func abs(x int) int {
 
 func largestArea(data []aocutils.Vertex) (aocutils.Vertex, int) {
 	gridMaxWidth, gridMaxHeight := getBounds(data)
-	gridMap := map[string]pointClaim{}
+	gridMap := map[string]*pointClaim{}
 
 	// Plot the data points
 	for _, center := range data {
-		gridMap[getVertexKey(center)] = pointClaim{points: []aocutils.Vertex{center}, radius: 0}
+		gridMap[getVertexKey(center)] = &pointClaim{points: []aocutils.Vertex{center}, radius: 0}
 	}
 
 	// Loop through the points making bigger and bigger manhattan circles
+	keepGoingMap := map[aocutils.Vertex]bool{}
 	keepGoing := true
 	radius := 1
+	loopCount := 0
 	for keepGoing {
 		keepGoing = false
 		for _, center := range data {
-			// Only keep going if claimManhattanCircle was able to claim at least one space previously - don't even return to false
-			keepGoing = claimManhattanCircle(center, radius, gridMaxWidth, gridMaxHeight, gridMap) || keepGoing
+			shouldKeepGoing, valueExists := keepGoingMap[center]
+			if shouldKeepGoing || !valueExists {
+				tempKeepGoing, tempLoopCount := claimManhattanCircle(center, radius, gridMaxWidth, gridMaxHeight, gridMap)
+				loopCount += tempLoopCount
+				keepGoingMap[center] = tempKeepGoing
+				keepGoing = tempKeepGoing || keepGoing
+			}
 		}
 		radius++
 	}
+
+	fmt.Printf("radius %d, loopCount %d\n", radius, loopCount)
 
 	// Get any point that goes to an edge, these are disqualified from counting
 	edges := getEdges(gridMaxWidth, gridMaxHeight, gridMap)
@@ -139,7 +148,7 @@ func getBounds(data []aocutils.Vertex) (maxX, maxY int) {
 	return
 }
 
-func getEdges(gridMaxWidth, gridMaxHeight int, gridMap map[string]pointClaim) map[aocutils.Vertex]bool {
+func getEdges(gridMaxWidth, gridMaxHeight int, gridMap map[string]*pointClaim) map[aocutils.Vertex]bool {
 	edges := map[aocutils.Vertex]bool{}
 	// Top and bottom of the grid
 	for i := 0; i <= gridMaxWidth; i++ {
@@ -175,56 +184,89 @@ func getEdges(gridMaxWidth, gridMaxHeight int, gridMap map[string]pointClaim) ma
 	return edges
 }
 
-func claimManhattanCircle(center aocutils.Vertex, radius, gridMaxWidth, gridMaxHeight int, grid map[string]pointClaim) (areAnySpacesClaimable bool) {
+func claimManhattanCircle(center aocutils.Vertex, radius, gridMaxWidth, gridMaxHeight int, grid map[string]*pointClaim) (areAnySpacesClaimable bool, loopCount int) {
 	// Start directly above vertext
 	x := center.X
 	y := center.Y - radius
 	areAnySpacesClaimable = false
+	// Start on the graph
+	if y < 0 {
+		x = x + (0 - y)
+		y = 0
+	}
 	// Center Top to Right Center ↘
 	for x < center.X+radius {
+		loopCount++
 		space := aocutils.Vertex{X: x, Y: y}
 		// Set to true if we can claim at least one space - don't ever reset to false
 		areAnySpacesClaimable = tryToClaimSpace(space, center, radius, gridMaxWidth, gridMaxHeight, grid) || areAnySpacesClaimable
 		x = x + 1
 		y = y + 1
 		// Outside of the graph, skip to the end
+		if x > gridMaxWidth {
+			break
+		}
+	}
+	// Start on the graph
+	if x > gridMaxWidth {
+		y = y + 2*(center.Y-y)
 	}
 	// Right Center to Center Bottom ↙
 	for x > center.X {
+		loopCount++
 		space := aocutils.Vertex{X: x, Y: y}
 		// Set to true if we can claim at least one space - don't ever reset to false
 		areAnySpacesClaimable = tryToClaimSpace(space, center, radius, gridMaxWidth, gridMaxHeight, grid) || areAnySpacesClaimable
 		x = x - 1
 		y = y + 1
 		// Outside of the graph, skip to the end
+		if y > gridMaxHeight {
+			break
+		}
+	}
+	// Start on the graph
+	if y > gridMaxHeight {
+		x = x - 2*(x-center.X)
 	}
 	// Center Bottom to Left Center ↖
 	for x > center.X-radius {
+		loopCount++
 		space := aocutils.Vertex{X: x, Y: y}
 		// Set to true if we can claim at least one space - don't ever reset to false
 		areAnySpacesClaimable = tryToClaimSpace(space, center, radius, gridMaxWidth, gridMaxHeight, grid) || areAnySpacesClaimable
 		x = x - 1
 		y = y - 1
+		if x < 0 {
+			break
+		}
+	}
+	// Start on the graph
+	if x < 0 {
+		y = y - 2*(y-center.Y)
 	}
 	// Left Center to Center Top ↗
 	for x < center.X {
+		loopCount++
 		space := aocutils.Vertex{X: x, Y: y}
 		// Set to true if we can claim at least one space - don't ever reset to false
 		areAnySpacesClaimable = tryToClaimSpace(space, center, radius, gridMaxWidth, gridMaxHeight, grid) || areAnySpacesClaimable
 		x = x + 1
 		y = y - 1
+		if y < 0 {
+			break
+		}
 	}
 	return
 }
 
-func tryToClaimSpace(space aocutils.Vertex, center aocutils.Vertex, radius, gridMaxWidth, gridMaxHeight int, grid map[string]pointClaim) bool {
+func tryToClaimSpace(space aocutils.Vertex, center aocutils.Vertex, radius, gridMaxWidth, gridMaxHeight int, grid map[string]*pointClaim) bool {
 	// Check to make sure we are inside the grid
 	if space.X <= gridMaxWidth && space.Y <= gridMaxHeight && space.X >= 0 && space.Y >= 0 {
 		spaceKey := getVertexKey(space)
 		claim, ok := grid[spaceKey]
 		// This space has not been claimed before
 		if !ok {
-			newClaim := pointClaim{points: []aocutils.Vertex{center}, radius: radius}
+			newClaim := &pointClaim{points: []aocutils.Vertex{center}, radius: radius}
 			grid[spaceKey] = newClaim
 			return true
 		} else if radius == claim.radius {
