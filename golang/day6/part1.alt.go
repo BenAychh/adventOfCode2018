@@ -17,48 +17,18 @@ func largestAreaAlt(data []aocutils.Vertex) (aocutils.Vertex, int) {
 	edges := getEdges(gridMaxWidth, gridMaxHeight, gridMap)
 
 	// These are the only vertices that can produce an answer
-	middles := map[aocutils.Vertex]bool{}
-	for _, center := range data {
-		_, ok := edges[center]
-		if !ok {
-			middles[center] = true
-		}
-	}
+	middles := getMiddles(data, edges)
 
-	areas := map[aocutils.Vertex]int{}
+	areas := getAreas(gridMap, middles)
 
-	for _, pointClaim := range gridMap {
-		if len(pointClaim.points) == 1 {
-			vertex := pointClaim.points[0]
-			_, isMiddle := middles[pointClaim.points[0]]
-			if isMiddle {
-				count, hasCount := areas[vertex]
-				if hasCount {
-					areas[vertex] = count + 1
-				} else {
-					areas[vertex] = 1
-				}
-			}
-		}
-	}
-
-	largestArea := 0
-	var largestAreaVertex aocutils.Vertex
-
-	for vertex, area := range areas {
-		if area > largestArea {
-			largestAreaVertex = vertex
-			largestArea = area
-		}
-	}
-
-	return largestAreaVertex, largestArea
+	return getLargestArea(areas)
 }
 
-func getClosestDistances(data []aocutils.Vertex, gridMaxWidth, gridMaxHeight int) (everyPoint map[string]*pointClaim) {
-	everyPoint = map[string]*pointClaim{}
+func getClosestDistances(data []aocutils.Vertex, gridMaxWidth, gridMaxHeight int) (everyPoint [][]*pointClaim) {
+	everyPoint = [][]*pointClaim{}
 	loopCount := 0
 	for x := 0; x <= gridMaxWidth; x++ {
+		row := []*pointClaim{}
 		for y := 0; y <= gridMaxHeight; y++ {
 			claim := pointClaim{}
 			distance := gridMaxHeight + gridMaxWidth
@@ -73,8 +43,9 @@ func getClosestDistances(data []aocutils.Vertex, gridMaxWidth, gridMaxHeight int
 					claim.points = append(claim.points, center)
 				}
 			}
-			everyPoint[getKey(x, y)] = &claim
+			row = append(row, &claim)
 		}
+		everyPoint = append(everyPoint, row)
 	}
 	fmt.Printf("loopCount %d\n", loopCount)
 	return
