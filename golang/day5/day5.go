@@ -16,12 +16,12 @@ func main() {
 	polymer := collapsePolymer(data)
 	part1 := len(polymer)
 	end := time.Now().UnixNano()
-	fmt.Printf("Part 1: %d, Time: %f\n", part1, float32(end-start)/1000.0/1000.0)
+	fmt.Printf("Part 1: %d, Time: %fms\n", part1, float32(end-start)/1000.0/1000.0)
 
 	start = time.Now().UnixNano()
 	unit, part2 := getShortestPolymerAfterCleaning(polymer)
 	end = time.Now().UnixNano()
-	fmt.Printf("Part 1: %d, (Unit: %v) Time: %f\n", part2, string(unit), float32(end-start)/1000.0/1000.0)
+	fmt.Printf("Part 1: %d, (Unit: %v) Time: %fms\n", part2, string(unit), float32(end-start)/1000.0/1000.0)
 }
 
 func getShortestPolymerAfterCleaning(data string) (unit rune, count int) {
