@@ -16,6 +16,12 @@ func main() {
 	part1 := findAllInterpretationsWithOver2Matches(data)
 	end := time.Now().UnixNano()
 	fmt.Printf("Part 1: %d, Time: %fms\n", part1, float32(end-start)/1000.0/1000.0)
+
+	testProgram := aocutils.LoadArrayOfStringsFromTextFile("part2.data")
+	start = time.Now().UnixNano()
+	part2 := processTestProgram(data, testProgram)
+	end = time.Now().UnixNano()
+	fmt.Printf("Part 2: %d, Time: %fms\n", part2, float32(end-start)/1000.0/1000.0)
 }
 
 type interpretation struct {

@@ -219,3 +219,22 @@ var opcodes = [16]func([4]int, [4]int) [4]int{
 	eqri,
 	eqrr,
 }
+
+var opcodesMap = map[string]func([4]int, [4]int) [4]int{
+	"addr": addr,
+	"addi": addi,
+	"mulr": mulr,
+	"muli": muli,
+	"banr": banr,
+	"bani": bani,
+	"borr": borr,
+	"bori": bori,
+	"setr": setr,
+	"seti": seti,
+	"gtir": gtir,
+	"gtri": gtri,
+	"gtrr": gtrr,
+	"eqir": eqir,
+	"eqri": eqri,
+	"eqrr": eqrr,
+}
