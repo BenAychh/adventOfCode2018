@@ -11,9 +11,15 @@ func main() {
 	data := aocutils.LoadArrayOfStringsFromTextFile("day15.data")
 	grid, entities := processMap(data)
 	start := time.Now().UnixNano()
-	part1Rounds, part1Hitpoints := getRoundsAndRemainingHitpoints(grid, entities, true)
+	part1Rounds, part1Hitpoints := getRoundsAndRemainingHitpoints(grid, entities, false)
 	end := time.Now().UnixNano()
 	fmt.Printf("Part 1: %d x %d = %d, Time: %fms\n", part1Rounds, part1Hitpoints, part1Rounds*part1Hitpoints, float32(end-start)/1000.0/1000.0)
+
+	grid, entities = processMap(data)
+	start = time.Now().UnixNano()
+	part2Rounds, part2Hitpoints := findLowestPowerNeededToKeepElvesAlive(grid, entities, false)
+	end = time.Now().UnixNano()
+	fmt.Printf("Part 2: %d x %d = %d, Time: %fms\n", part2Rounds, part2Hitpoints, part2Rounds*part2Hitpoints, float32(end-start)/1000.0/1000.0)
 }
 
 func processMap(lines []string) (grid [][]bool, entities entityLocations) {
