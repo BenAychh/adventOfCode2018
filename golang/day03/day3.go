@@ -1,11 +1,12 @@
 package main
 
 import (
-	"aocutils"
 	"fmt"
 	"strconv"
 	"strings"
 	"time"
+
+	"github.com/benaychh/aocutils"
 )
 
 type claim struct {
@@ -17,7 +18,7 @@ type claim struct {
 }
 
 func main() {
-	data := aocutils.LoadArrayOfStringsFromTextFile("day3.data")
+	data := aocutils.LoadFileAsStringArray("day3.data")
 	start := time.Now().UnixNano()
 	part1, overlapMap, claims := overlap(data)
 	end := time.Now().UnixNano()

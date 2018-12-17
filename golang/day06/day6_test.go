@@ -3,7 +3,7 @@ package main
 import (
 	"testing"
 
-	"github.com/BenAychh/aocutils"
+	"github.com/benaychh/aocutils"
 )
 
 var data = []aocutils.Vertex{

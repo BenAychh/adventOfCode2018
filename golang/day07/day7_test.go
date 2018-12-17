@@ -24,7 +24,7 @@ func TestDay7Part1(t *testing.T) {
 }
 
 func TestDay7Part2(t *testing.T) {
-	expected := 15
+	expected := 14
 	actual := getTotalTime(data, 2, 0)
 
 	if actual != expected {

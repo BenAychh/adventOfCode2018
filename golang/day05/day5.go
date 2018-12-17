@@ -6,7 +6,7 @@ import (
 	"time"
 	"unicode"
 
-	"github.com/BenAychh/aocutils"
+	"github.com/benaychh/aocutils"
 )
 
 func main() {
@@ -63,12 +63,19 @@ func collapsePolymer(data string) string {
 
 		if current == getOpposite(next) {
 			polymerAsRunes = append(polymerAsRunes[:i], polymerAsRunes[i+2:]...)
-			i = aocutils.Max(i-1, 0)
+			i = max(i-1, 0)
 		} else {
 			i++
 		}
 	}
 	return string(polymerAsRunes)
+}
+
+func max(a, b int) int {
+	if a > b {
+		return a
+	}
+	return b
 }
 
 func getOpposite(r rune) rune {

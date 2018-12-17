@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"math"
 
-	"github.com/BenAychh/aocutils"
+	"github.com/benaychh/aocutils"
 )
 
 func getMessage(points []movingPoint) (seconds int) {

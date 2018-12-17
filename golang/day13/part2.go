@@ -3,7 +3,7 @@ package main
 import (
 	"fmt"
 
-	"github.com/BenAychh/aocutils"
+	"github.com/benaychh/aocutils"
 )
 
 func getLastCart(tracks [][]rune, carts map[int]map[int]cart, print bool) (lastCartPosition *aocutils.Vertex) {

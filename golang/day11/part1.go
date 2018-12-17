@@ -6,7 +6,7 @@ import (
 	"math"
 	"strconv"
 
-	"github.com/BenAychh/aocutils"
+	"github.com/benaychh/aocutils"
 )
 
 func getHighestPower(serial int) (aocutils.Vertex, int) {

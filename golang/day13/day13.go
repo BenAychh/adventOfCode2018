@@ -5,7 +5,7 @@ import (
 	"strings"
 	"time"
 
-	"github.com/BenAychh/aocutils"
+	"github.com/benaychh/aocutils"
 	"github.com/mgutz/ansi"
 )
 

@@ -1,7 +1,7 @@
 package main
 
 import (
-	"github.com/BenAychh/aocutils"
+	"github.com/benaychh/aocutils"
 )
 
 func getHighestPowerAnySize(serial int) (aocutils.Vertex, int, int) {

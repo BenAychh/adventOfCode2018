@@ -1,6 +1,6 @@
 package main
 
-import "github.com/BenAychh/aocutils"
+import "github.com/benaychh/aocutils"
 
 func underDistanceLimitFromEverything(data []aocutils.Vertex, distanceLimit int) int {
 	gridMaxWidth, gridMaxHeight := getBounds(data)

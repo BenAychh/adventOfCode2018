@@ -3,7 +3,7 @@ package main
 import (
 	"testing"
 
-	"github.com/BenAychh/aocutils"
+	"github.com/benaychh/aocutils"
 )
 
 func TestCellCalculations1(t *testing.T) {

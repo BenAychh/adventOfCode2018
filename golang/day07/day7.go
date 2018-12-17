@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"time"
 
-	"github.com/BenAychh/aocutils"
+	"github.com/benaychh/aocutils"
 )
 
 func main() {

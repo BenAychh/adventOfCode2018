@@ -3,7 +3,7 @@ package main
 import (
 	"testing"
 
-	"github.com/BenAychh/aocutils"
+	"github.com/benaychh/aocutils"
 )
 
 func TestFirstCrash(t *testing.T) {

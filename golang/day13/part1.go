@@ -5,7 +5,7 @@ import (
 	"log"
 	"sort"
 
-	"github.com/BenAychh/aocutils"
+	"github.com/benaychh/aocutils"
 )
 
 func getFirstCrash(tracks [][]rune, carts map[int]map[int]cart, print bool) (crashSite *aocutils.Vertex) {

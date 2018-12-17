@@ -2,12 +2,10 @@ package main
 
 import (
 	"testing"
-
-	"github.com/BenAychh/aocutils"
 )
 
 func TestDay5Part1(t *testing.T) {
-	data := aocutils.ConvertStringToRuneArray("dabAcCaCBAcCcaDA")
+	data := "dabAcCaCBAcCcaDA"
 	expected := "dabCBAcaDA"
 	actual := collapsePolymer(data)
 
@@ -17,7 +15,7 @@ func TestDay5Part1(t *testing.T) {
 }
 
 func TestDay5Part1_extra(t *testing.T) {
-	data := aocutils.ConvertStringToRuneArray("JjDdoODgGdNnIiTtJjFfnsSN")
+	data := "JjDdoODgGdNnIiTtJjFfnsSN"
 	expected := ""
 	actual := collapsePolymer(data)
 
@@ -27,7 +25,7 @@ func TestDay5Part1_extra(t *testing.T) {
 }
 
 func TestDay5Part2(t *testing.T) {
-	data := aocutils.ConvertStringToRuneArray("dabAcCaCBAcCcaDA")
+	data := "dabAcCaCBAcCcaDA"
 	expected := 4
 	letter, actual := getShortestPolymerAfterCleaning(data)
 
@@ -37,7 +35,7 @@ func TestDay5Part2(t *testing.T) {
 }
 
 func TestDay5Part2_extra(t *testing.T) {
-	data := aocutils.ConvertStringToRuneArray("JjDdoODgGdNnIiTtJjFfnsSNsVUaAugGpPLAalvVHRrhvhoOZzQqHLhjJSsOoJjSaAsrqkBbKQRtTHlSqQeEioOICcUuHmMhPVvJjpJjDdhHUuSL")
+	data := "JjDdoODgGdNnIiTtJjFfnsSNsVUaAugGpPLAalvVHRrhvhoOZzQqHLhjJSsOoJjSaAsrqkBbKQRtTHlSqQeEioOICcUuHmMhPVvJjpJjDdhHUuSL"
 	expected := 1
 	letter, actual := getShortestPolymerAfterCleaning(data)
 

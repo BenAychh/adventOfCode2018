@@ -3,7 +3,7 @@ package main
 import (
 	"fmt"
 
-	"github.com/BenAychh/aocutils"
+	"github.com/benaychh/aocutils"
 )
 
 func largestArea(data []aocutils.Vertex) (aocutils.Vertex, int) {

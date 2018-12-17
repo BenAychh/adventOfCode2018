@@ -1,13 +1,14 @@
 package main
 
 import (
-	"aocutils"
 	"fmt"
 	"time"
+
+	"github.com/benaychh/aocutils"
 )
 
 func main() {
-	resultAsInts := aocutils.LoadArrayOfIntsFromTextFile("day1.data")
+	resultAsInts := aocutils.LoadFileAsIntegerArray("day1.data")
 
 	start := time.Now().UnixNano()
 	part1 := processor(resultAsInts)

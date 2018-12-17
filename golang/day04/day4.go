@@ -1,17 +1,18 @@
 package main
 
 import (
-	"aocutils"
 	"fmt"
 	"log"
 	"sort"
 	"strconv"
 	"strings"
 	"time"
+
+	"github.com/benaychh/aocutils"
 )
 
 func main() {
-	data := aocutils.LoadArrayOfStringsFromTextFile("day4.data")
+	data := aocutils.LoadFileAsStringArray("day4.data")
 	start := time.Now().UnixNano()
 	part1Guard, part1Minute := sleepiestGuardAndSleepiestMinute(data)
 	end := time.Now().UnixNano()

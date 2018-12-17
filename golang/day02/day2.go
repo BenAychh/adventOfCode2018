@@ -1,13 +1,14 @@
 package main
 
 import (
-	"aocutils"
 	"fmt"
 	"time"
+
+	"github.com/benaychh/aocutils"
 )
 
 func main() {
-	data := aocutils.LoadArrayOfStringsFromTextFile("day2.data")
+	data := aocutils.LoadFileAsStringArray("day2.data")
 
 	start := time.Now().UnixNano()
 	part1 := checksum(data)

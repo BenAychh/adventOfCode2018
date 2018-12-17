@@ -29,7 +29,7 @@ func day1Part1Func(data []int, expected int) func(*testing.T) {
 
 func day1Part2Func(data []int, expected int) func(*testing.T) {
 	return func(t *testing.T) {
-		actual := repeatFinder(data)
+		actual, _ := repeatFinder(data)
 
 		if actual != expected {
 			t.Errorf("Expected %v to be %d but instead got %d", data, expected, actual)
