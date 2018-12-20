@@ -1,7 +1,6 @@
 package main
 
 import (
-	"fmt"
 	"strconv"
 )
 
@@ -33,7 +32,6 @@ func getPrevious5(sequence []int, print bool) int {
 
 func checkEqual(a []int, b []int) bool {
 	if len(a) != len(b) {
-		fmt.Println("here????")
 		return false
 	}
 	for i, num := range a {
