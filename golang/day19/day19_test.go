@@ -17,3 +17,12 @@ func TestFinalRegisterState(t *testing.T) {
 		t.Errorf("Expected %v to be %v but instead got %v", fileName, expected, actual)
 	}
 }
+
+func TestOptimizedFn(t *testing.T) {
+	expected := 1482
+	actual := getOptimizedBreakIpRegister2(0)
+
+	if actual != expected {
+		t.Errorf("Expected optimized (0) to be %v but instead got %v", expected, actual)
+	}
+}
